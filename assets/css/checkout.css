@@ -1,0 +1,90 @@
+.tdp-payment-instructions {
+	margin: 24px 0;
+	padding: 24px;
+	border: 1px solid #e0e0e0;
+	border-radius: 8px;
+	background: #fafafa;
+}
+.tdp-payment-instructions h2 {
+	margin-top: 0;
+}
+.tdp-instructions-intro {
+	margin-bottom: 24px;
+}
+.tdp-payment-grid {
+	display: grid;
+	grid-template-columns: 240px 1fr;
+	gap: 24px;
+	align-items: start;
+}
+@media (max-width: 600px) {
+	.tdp-payment-grid {
+		grid-template-columns: 1fr;
+	}
+}
+.tdp-payment-qr img {
+	display: block;
+	border: 1px solid #ddd;
+	background: #fff;
+	padding: 8px;
+	border-radius: 8px;
+}
+.tdp-payment-details dl {
+	margin: 0;
+}
+.tdp-payment-details dt {
+	font-weight: 600;
+	margin-top: 12px;
+}
+.tdp-payment-details dt:first-child {
+	margin-top: 0;
+}
+.tdp-payment-details dd {
+	margin: 4px 0 0;
+	word-break: break-all;
+}
+.tdp-payment-details code {
+	background: #f0f0f0;
+	padding: 4px 8px;
+	border-radius: 4px;
+	font-size: 0.95em;
+}
+.tdp-status {
+	margin-top: 24px;
+	padding: 12px 16px;
+	background: #fff;
+	border: 1px solid #e0e0e0;
+	border-radius: 6px;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+.tdp-status-dot {
+	display: inline-block;
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	background: #f0a020;
+	animation: tdp-pulse 1.5s ease-in-out infinite;
+}
+.tdp-status-dot.tdp-pending {
+	background: #2080d0;
+}
+.tdp-status-dot.tdp-paid {
+	background: #20a060;
+	animation: none;
+}
+@keyframes tdp-pulse {
+	0%, 100% { opacity: 1; }
+	50% { opacity: 0.4; }
+}
+.tdp-warning {
+	margin-top: 16px;
+	padding: 12px 16px;
+	background: #fff4e0;
+	border-left: 4px solid #f0a020;
+	font-size: 0.9em;
+}
+.tdp-copy {
+	margin-left: 8px;
+}

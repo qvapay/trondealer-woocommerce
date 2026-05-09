@@ -1,0 +1,10 @@
+.DS_Store
+node_modules/
+vendor/
+*.log
+.idea/
+.vscode/
+.phpunit.result.cache
+build/
+dist/
+*.zip

@@ -11,23 +11,37 @@
 	var statusText = root.querySelector('.tdp-status-text');
 	var statusDot = root.querySelector('.tdp-status-dot');
 
+	var intervalId = null;
+	var settled = false;
+
+	function stop() {
+		if (intervalId !== null) {
+			clearInterval(intervalId);
+			intervalId = null;
+		}
+	}
+
 	function poll() {
+		if (settled) return;
 		var url = statusUrl + (statusUrl.indexOf('?') === -1 ? '?' : '&') + 'key=' + encodeURIComponent(statusKey);
 		fetch(url, { credentials: 'same-origin' })
 			.then(function (r) { return r.ok ? r.json() : null; })
 			.then(function (data) {
-				if (!data) return;
-				if (data.status === 'on-hold') {
+				if (!data || settled) return;
+				if (data.status === 'on-hold' && !data.is_paid) {
 					if (statusDot) statusDot.classList.add('tdp-pending');
 					if (statusText) statusText.textContent = 'Pago detectado, esperando confirmación...';
 				}
 				if (data.is_paid) {
+					settled = true;
+					stop();
 					if (statusDot) statusDot.classList.add('tdp-paid');
-					if (statusText) statusText.textContent = 'Pago confirmado. Recargando...';
-					setTimeout(function () { window.location.reload(); }, 1500);
+					if (statusText) statusText.textContent = 'Pago confirmado. Redirigiendo...';
+					var target = data.redirect || window.location.href;
+					setTimeout(function () { window.location.replace(target); }, 1500);
 				}
 			})
-			.catch(function () { /* ignore */ });
+			.catch(function () { /* ignore transient network errors */ });
 	}
 
 	var copyBtn = root.querySelector('.tdp-copy');
@@ -54,5 +68,5 @@
 	}
 
 	poll();
-	setInterval(poll, 10000);
+	intervalId = setInterval(poll, 10000);
 })();

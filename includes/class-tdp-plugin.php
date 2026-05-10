@@ -45,7 +45,7 @@ class TDP_Plugin {
 		add_action( 'init', array( __CLASS__, 'load_textdomain' ) );
 		add_action( 'rest_api_init', array( 'TDP_Webhook', 'register_routes' ) );
 		add_action( 'tdp_reconcile_pending_orders', array( 'TDP_Cron_Fallback', 'run' ) );
-		add_action( 'woocommerce_blocks_loaded', array( 'TDP_Blocks_Integration', 'register' ) );
+		add_action( 'woocommerce_blocks_payment_method_type_registration', array( 'TDP_Blocks_Integration', 'register' ), 5 );
 
 		TDP_Cron_Fallback::register_schedule();
 		TDP_Admin::init();

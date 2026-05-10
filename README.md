@@ -38,7 +38,7 @@ The gateway will hide itself from checkout if the store currency is not USD or n
 
 1. Copy this folder into `wp-content/plugins/trondealer-payments/` (or upload the zip from **Plugins → Add New**).
 2. Activate **Trondealer Payments** from the WordPress plugins screen.
-3. Go to **WooCommerce → Settings → Payments → Trondealer (Crypto)**.
+3. Go to **WooCommerce → Settings → Payments → Trondealer**.
 4. Paste your API key and click **Run connection test**. This will:
    - Verify the API key.
    - Generate a webhook secret (`tdp_webhook_secret`) if one does not yet exist.

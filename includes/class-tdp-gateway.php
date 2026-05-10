@@ -14,7 +14,8 @@ class TDP_Gateway extends WC_Payment_Gateway {
 
 	public function __construct() {
 		$this->id                 = self::ID;
-		$this->method_title       = __( 'Trondealer (Crypto)', 'trondealer-payments' );
+		$this->icon               = apply_filters( 'tdp_gateway_icon', TDP_PLUGIN_URL . 'assets/images/trondealer.svg', $this );
+		$this->method_title       = __( 'Trondealer', 'trondealer-payments' );
 		$this->method_description = __( 'Accept USDT and USDC stablecoin payments across 9 blockchains.', 'trondealer-payments' );
 		$this->has_fields         = true;
 		$this->supports           = array( 'products', 'refunds' );
@@ -236,6 +237,9 @@ class TDP_Gateway extends WC_Payment_Gateway {
 	public function render_thankyou( $order_id ) {
 		$order = wc_get_order( $order_id );
 		if ( ! $order || $order->get_payment_method() !== self::ID ) {
+			return;
+		}
+		if ( $order->is_paid() ) {
 			return;
 		}
 		$assignment = TDP_Orders::get_assignment( $order );

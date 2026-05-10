@@ -15,6 +15,16 @@ class TDP_Admin {
 		add_action( 'admin_post_tdp_connection_test', array( __CLASS__, 'handle_connection_test' ) );
 		add_action( 'admin_notices', array( __CLASS__, 'render_notice' ) );
 		add_action( 'update_option_woocommerce_' . TDP_Gateway::ID . '_settings', array( __CLASS__, 'sync_settings' ), 10, 2 );
+		add_filter( 'plugin_action_links_' . plugin_basename( TDP_PLUGIN_FILE ), array( __CLASS__, 'plugin_action_links' ) );
+	}
+
+	public static function plugin_action_links( $links ) {
+		$settings_url = admin_url( 'admin.php?page=wc-settings&tab=checkout&section=' . TDP_Gateway::ID );
+		array_unshift(
+			$links,
+			'<a href="' . esc_url( $settings_url ) . '">' . esc_html__( 'Settings', 'trondealer-payments' ) . '</a>'
+		);
+		return $links;
 	}
 
 	public static function sync_settings( $old, $new ) {

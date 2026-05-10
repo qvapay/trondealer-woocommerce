@@ -1,0 +1,17 @@
+# Files and directories excluded from `git archive` exports.
+# Keep this in sync with build.sh's SHIP list.
+/.github             export-ignore
+/.wordpress-org      export-ignore
+/.gitattributes      export-ignore
+/.gitignore          export-ignore
+/.idea               export-ignore
+/.vscode             export-ignore
+/CLAUDE.md           export-ignore
+/README.md           export-ignore
+/build.sh            export-ignore
+/dist                export-ignore
+
+# Normalize line endings for text files.
+* text=auto eol=lf
+*.png binary
+*.svg text eol=lf

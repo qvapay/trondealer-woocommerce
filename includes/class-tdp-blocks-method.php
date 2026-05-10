@@ -34,6 +34,13 @@ class TDP_Blocks_Method extends \Automattic\WooCommerce\Blocks\Payments\Integrat
 			TDP_VERSION,
 			true
 		);
+		wp_register_style(
+			'tdp-checkout',
+			TDP_PLUGIN_URL . 'assets/css/checkout.css',
+			array(),
+			TDP_VERSION
+		);
+		wp_enqueue_style( 'tdp-checkout' );
 		return array( $handle );
 	}
 
@@ -43,17 +50,37 @@ class TDP_Blocks_Method extends \Automattic\WooCommerce\Blocks\Payments\Integrat
 
 	public function get_payment_method_data() {
 		$enabled_combos = isset( $this->settings['enabled_networks'] ) ? (array) $this->settings['enabled_networks'] : array();
-		$combos         = array_filter(
-			TDP_Networks::combinations(),
-			function ( $combo ) use ( $enabled_combos ) {
-				return in_array( $combo['id'], $enabled_combos, true );
+		$networks       = array();
+
+		foreach ( TDP_Networks::all() as $key => $net ) {
+			$assets = array();
+			foreach ( $net['assets'] as $asset ) {
+				$combo_id = $key . ':' . $asset;
+				if ( ! in_array( $combo_id, $enabled_combos, true ) ) {
+					continue;
+				}
+				$assets[] = array(
+					'id'     => $combo_id,
+					'symbol' => $asset,
+					'icon'   => TDP_Networks::asset_icon_url( $asset ),
+				);
 			}
-		);
+			if ( empty( $assets ) ) {
+				continue;
+			}
+			$networks[] = array(
+				'key'      => $key,
+				'label'    => $net['label'],
+				'icon'     => TDP_Networks::network_icon_url( $key ),
+				'eta_secs' => $net['confirm_eta'],
+				'assets'   => $assets,
+			);
+		}
 
 		return array(
 			'title'       => isset( $this->settings['title'] ) ? $this->settings['title'] : __( 'Pay with Crypto (USDT / USDC)', 'trondealer-payments' ),
 			'description' => isset( $this->settings['description'] ) ? $this->settings['description'] : '',
-			'combos'      => array_values( $combos ),
+			'networks'    => $networks,
 			'supports'    => array( 'products' ),
 		);
 	}

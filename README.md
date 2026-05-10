@@ -148,7 +148,20 @@ See [`CLAUDE.md`](./CLAUDE.md) for an architectural deep-dive.
 
 ## License
 
-GPL-2.0-or-later. See the plugin header for the full license URL.
+This plugin is released under the **GNU General Public License v2.0 or later (GPL-2.0-or-later)**.
+
+> Trondealer Payments for WooCommerce
+> Copyright (C) 2026 Trondealer / QvaPay
+>
+> This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License, version 2, as published by the Free Software Foundation.
+>
+> This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+The full license text is in [`LICENSE`](./LICENSE). If you redistribute or fork this plugin, you must keep it under a GPL-2.0-compatible license.
+
+### Third-party assets
+
+Network and asset icons (`assets/images/networks/`, `assets/images/coins/`) are taken from [web3icons](https://github.com/0xa3k5/web3icons) and licensed under MIT. The bundled brand marks remain the property of their respective owners and are used in a descriptive capacity only. See [`NOTICE.md`](./NOTICE.md) for the full attribution and trademark note.
 
 ## Links
 

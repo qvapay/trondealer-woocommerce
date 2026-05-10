@@ -88,3 +88,126 @@
 .tdp-copy {
 	margin-left: 8px;
 }
+
+/* === Network selector (classic + Blocks checkout) === */
+.tdp-blocks-description {
+	margin: 0 0 16px;
+	color: #555;
+}
+.tdp-network-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+	gap: 12px;
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+.tdp-network-card {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	padding: 14px 14px 12px;
+	border: 1px solid #e3e3e8;
+	border-radius: 12px;
+	background: #fff;
+	transition: border-color .15s ease, box-shadow .15s ease, transform .15s ease;
+}
+.tdp-network-card:hover {
+	border-color: #c7c7d1;
+}
+.tdp-network-card:has(input:checked),
+.tdp-network-card.is-active {
+	border-color: #2563eb;
+	box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
+}
+.tdp-network-card__header {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+.tdp-network-card__meta {
+	display: flex;
+	flex-direction: column;
+	min-width: 0;
+}
+.tdp-network-card__label {
+	font-weight: 600;
+	font-size: 14px;
+	line-height: 1.2;
+	color: #111;
+}
+.tdp-network-card__eta {
+	font-size: 12px;
+	color: #6b7280;
+	margin-top: 2px;
+}
+.tdp-icon {
+	width: 28px;
+	height: 28px;
+	flex-shrink: 0;
+}
+.tdp-icon--fallback {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	background: #eef2ff;
+	color: #2563eb;
+	border-radius: 50%;
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.02em;
+}
+.tdp-network-card__assets {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+.tdp-asset-pill {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 6px 12px;
+	border: 1px solid #d4d4dc;
+	border-radius: 999px;
+	background: #fafafa;
+	color: #1f2937;
+	font-size: 13px;
+	font-weight: 500;
+	cursor: pointer;
+	user-select: none;
+	transition: all .15s ease;
+	margin: 0;
+}
+.tdp-asset-pill:hover {
+	border-color: #9ca3af;
+	background: #f3f4f6;
+}
+.tdp-asset-pill input[type="radio"],
+.tdp-asset-pill input[type="checkbox"] {
+	position: absolute;
+	opacity: 0;
+	pointer-events: none;
+	width: 0;
+	height: 0;
+}
+.tdp-asset-pill:has(input:checked),
+.tdp-asset-pill.is-selected {
+	background: #2563eb;
+	border-color: #2563eb;
+	color: #fff;
+}
+.tdp-asset-pill__icon {
+	border-radius: 50%;
+}
+.tdp-asset-pill__symbol {
+	letter-spacing: 0.02em;
+}
+button.tdp-asset-pill {
+	font-family: inherit;
+	line-height: 1.2;
+}
+@media (max-width: 480px) {
+	.tdp-network-grid {
+		grid-template-columns: 1fr;
+	}
+}

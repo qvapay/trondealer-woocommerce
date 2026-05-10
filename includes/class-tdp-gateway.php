@@ -33,9 +33,9 @@ class TDP_Gateway extends WC_Payment_Gateway {
 	}
 
 	public function init_form_fields() {
-		$network_options = array();
+		$default_combos = array();
 		foreach ( TDP_Networks::combinations() as $combo ) {
-			$network_options[ $combo['id'] ] = $combo['label'];
+			$default_combos[] = $combo['id'];
 		}
 
 		$this->form_fields = array(
@@ -71,11 +71,10 @@ class TDP_Gateway extends WC_Payment_Gateway {
 				'desc_tip'    => true,
 			),
 			'enabled_networks' => array(
-				'title'   => __( 'Enabled Networks', 'trondealer-payments' ),
-				'type'    => 'multiselect',
-				'class'   => 'wc-enhanced-select',
-				'options' => $network_options,
-				'default' => array_keys( $network_options ),
+				'title'       => __( 'Enabled Networks', 'trondealer-payments' ),
+				'type'        => 'tdp_network_matrix',
+				'description' => __( 'Pick which network/asset combinations are available at checkout.', 'trondealer-payments' ),
+				'default'     => $default_combos,
 			),
 			'tolerance'        => array(
 				'title'             => __( 'Underpayment tolerance (%)', 'trondealer-payments' ),
@@ -92,6 +91,74 @@ class TDP_Gateway extends WC_Payment_Gateway {
 				'default' => 'no',
 			),
 		);
+	}
+
+	public function generate_tdp_network_matrix_html( $key, $data ) {
+		$field_key = $this->get_field_key( $key );
+		$value     = (array) $this->get_option( $key, isset( $data['default'] ) ? $data['default'] : array() );
+		$desc      = isset( $data['description'] ) ? $data['description'] : '';
+		$title     = isset( $data['title'] ) ? $data['title'] : '';
+
+		wp_enqueue_style(
+			'tdp-admin',
+			TDP_PLUGIN_URL . 'assets/css/admin.css',
+			array(),
+			TDP_VERSION
+		);
+
+		ob_start();
+		?>
+		<tr valign="top">
+			<th scope="row" class="titledesc">
+				<label><?php echo esc_html( $title ); ?></label>
+			</th>
+			<td class="forminp">
+				<fieldset class="tdp-admin-matrix">
+					<?php foreach ( TDP_Networks::all() as $net_key => $net ) : ?>
+						<div class="tdp-admin-matrix__row">
+							<div class="tdp-admin-matrix__network">
+								<?php $icon = TDP_Networks::network_icon_url( $net_key ); ?>
+								<?php if ( $icon ) : ?>
+									<img src="<?php echo esc_url( $icon ); ?>" alt="" class="tdp-admin-matrix__icon" width="24" height="24" />
+								<?php endif; ?>
+								<span class="tdp-admin-matrix__label"><?php echo esc_html( $net['label'] ); ?></span>
+								<span class="tdp-admin-matrix__eta">~<?php echo esc_html( $net['confirm_eta'] < 60 ? $net['confirm_eta'] . 's' : max( 1, (int) round( $net['confirm_eta'] / 60 ) ) . 'm' ); ?></span>
+							</div>
+							<div class="tdp-admin-matrix__assets">
+								<?php foreach ( $net['assets'] as $asset ) :
+									$combo  = $net_key . ':' . $asset;
+									$icon_a = TDP_Networks::asset_icon_url( $asset );
+								?>
+									<label class="tdp-admin-matrix__pill">
+										<input type="checkbox" name="<?php echo esc_attr( $field_key ); ?>[]" value="<?php echo esc_attr( $combo ); ?>" <?php checked( in_array( $combo, $value, true ) ); ?> />
+										<?php if ( $icon_a ) : ?>
+											<img src="<?php echo esc_url( $icon_a ); ?>" alt="" width="16" height="16" />
+										<?php endif; ?>
+										<span><?php echo esc_html( $asset ); ?></span>
+									</label>
+								<?php endforeach; ?>
+							</div>
+						</div>
+					<?php endforeach; ?>
+					<?php if ( $desc ) : ?>
+						<p class="description"><?php echo esc_html( $desc ); ?></p>
+					<?php endif; ?>
+				</fieldset>
+			</td>
+		</tr>
+		<?php
+		return ob_get_clean();
+	}
+
+	public function validate_tdp_network_matrix_field( $key, $value ) {
+		if ( ! is_array( $value ) ) {
+			return array();
+		}
+		$valid_combos = array();
+		foreach ( TDP_Networks::combinations() as $combo ) {
+			$valid_combos[] = $combo['id'];
+		}
+		return array_values( array_intersect( $value, $valid_combos ) );
 	}
 
 	public function is_available() {
@@ -128,30 +195,68 @@ class TDP_Gateway extends WC_Payment_Gateway {
 		}
 
 		$enabled_combos = (array) $this->get_option( 'enabled_networks', array() );
-		$combos = array_filter(
-			TDP_Networks::combinations(),
-			function ( $combo ) use ( $enabled_combos ) {
-				return in_array( $combo['id'], $enabled_combos, true );
+		$networks       = array();
+		foreach ( TDP_Networks::all() as $key => $net ) {
+			$assets = array();
+			foreach ( $net['assets'] as $asset ) {
+				$combo_id = $key . ':' . $asset;
+				if ( in_array( $combo_id, $enabled_combos, true ) ) {
+					$assets[] = array( 'id' => $combo_id, 'symbol' => $asset );
+				}
 			}
-		);
+			if ( ! empty( $assets ) ) {
+				$networks[] = array( 'key' => $key, 'net' => $net, 'assets' => $assets );
+			}
+		}
 
-		if ( empty( $combos ) ) {
+		if ( empty( $networks ) ) {
 			echo '<p>' . esc_html__( 'No networks enabled. Please contact the merchant.', 'trondealer-payments' ) . '</p>';
 			return;
 		}
 
-		echo '<fieldset id="tdp-network-selector">';
-		echo '<p class="form-row form-row-wide"><label for="tdp_network_choice">' . esc_html__( 'Choose network and asset', 'trondealer-payments' ) . ' <span class="required">*</span></label>';
-		echo '<select name="tdp_network_choice" id="tdp_network_choice" required>';
-		foreach ( $combos as $combo ) {
-			printf(
-				'<option value="%s">%s (~%s)</option>',
-				esc_attr( $combo['id'] ),
-				esc_html( $combo['label'] ),
-				esc_html( $this->format_eta( $combo['eta_secs'] ) )
-			);
+		wp_enqueue_style(
+			'tdp-checkout',
+			TDP_PLUGIN_URL . 'assets/css/checkout.css',
+			array(),
+			TDP_VERSION
+		);
+
+		$first = true;
+		echo '<fieldset id="tdp-network-selector" class="tdp-network-grid">';
+		foreach ( $networks as $row ) {
+			$net  = $row['net'];
+			$key  = $row['key'];
+			$icon = TDP_Networks::network_icon_url( $key );
+			?>
+			<div class="tdp-network-card" data-network="<?php echo esc_attr( $key ); ?>">
+				<div class="tdp-network-card__header">
+					<?php if ( $icon ) : ?>
+						<img src="<?php echo esc_url( $icon ); ?>" alt="" class="tdp-icon tdp-icon--network" width="28" height="28" />
+					<?php else : ?>
+						<span class="tdp-icon tdp-icon--fallback" aria-hidden="true"><?php echo esc_html( strtoupper( substr( $net['label'], 0, 2 ) ) ); ?></span>
+					<?php endif; ?>
+					<div class="tdp-network-card__meta">
+						<span class="tdp-network-card__label"><?php echo esc_html( $net['label'] ); ?></span>
+						<span class="tdp-network-card__eta">~<?php echo esc_html( $this->format_eta( $net['confirm_eta'] ) ); ?></span>
+					</div>
+				</div>
+				<div class="tdp-network-card__assets">
+					<?php foreach ( $row['assets'] as $a ) :
+						$asset_icon = TDP_Networks::asset_icon_url( $a['symbol'] );
+					?>
+						<label class="tdp-asset-pill">
+							<input type="radio" name="tdp_network_choice" value="<?php echo esc_attr( $a['id'] ); ?>" <?php checked( $first ); ?> required />
+							<?php if ( $asset_icon ) : ?>
+								<img src="<?php echo esc_url( $asset_icon ); ?>" alt="" width="16" height="16" class="tdp-asset-pill__icon" />
+							<?php endif; ?>
+							<span class="tdp-asset-pill__symbol"><?php echo esc_html( $a['symbol'] ); ?></span>
+						</label>
+						<?php $first = false; ?>
+					<?php endforeach; ?>
+				</div>
+			</div>
+			<?php
 		}
-		echo '</select></p>';
 		echo '</fieldset>';
 	}
 

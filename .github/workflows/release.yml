@@ -1,0 +1,33 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify tag matches plugin Version header
+        run: |
+          TAG_VERSION="${GITHUB_REF#refs/tags/v}"
+          HEADER_VERSION=$(grep -E '^[[:space:]]*\*[[:space:]]*Version:' trondealer-payments.php | head -1 | awk -F': ' '{print $2}' | tr -d '[:space:]')
+          if [[ "$TAG_VERSION" != "$HEADER_VERSION" ]]; then
+            echo "Tag v$TAG_VERSION does not match plugin header version $HEADER_VERSION" >&2
+            exit 1
+          fi
+
+      - name: Build distribution zip
+        run: bash build.sh
+
+      - name: Upload to release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/trondealer-payments-*.zip
+          generate_release_notes: true

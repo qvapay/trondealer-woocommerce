@@ -1,6 +1,6 @@
 === Trondealer Payments ===
-Contributors: trondealer
-Tags: woocommerce, payments, cryptocurrency, usdt, usdc, stablecoin, tron, solana, ethereum, polygon, bsc
+Contributors: qvapay, trondealer
+Tags: woocommerce, payments, cryptocurrency, usdt, usdc
 Requires at least: 6.2
 Tested up to: 6.7
 Requires PHP: 7.4
@@ -8,7 +8,7 @@ Stable tag: 0.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Accept USDT and USDC stablecoin payments in WooCommerce across 9 blockchains via the Trondealer V2 API.
+Accept USDT and USDC stablecoin payments in WooCommerce across 9 blockchains. Maintained by QvaPay.
 
 == Description ==
 

@@ -122,6 +122,27 @@ class TDP_Networks {
 		return $out;
 	}
 
+	public static function network_icon_url( $network_key ) {
+		$net = self::get( $network_key );
+		if ( ! $net ) {
+			return '';
+		}
+		$path = 'assets/images/networks/' . $network_key . '.svg';
+		if ( ! file_exists( TDP_PLUGIN_DIR . $path ) ) {
+			return '';
+		}
+		return TDP_PLUGIN_URL . $path;
+	}
+
+	public static function asset_icon_url( $asset ) {
+		$slug = strtolower( $asset );
+		$path = 'assets/images/coins/' . $slug . '.svg';
+		if ( ! file_exists( TDP_PLUGIN_DIR . $path ) ) {
+			return '';
+		}
+		return TDP_PLUGIN_URL . $path;
+	}
+
 	public static function build_payment_uri( $network_key, $asset, $address, $amount ) {
 		$family = self::family( $network_key );
 		$amount_str = rtrim( rtrim( number_format( (float) $amount, 6, '.', '' ), '0' ), '.' );

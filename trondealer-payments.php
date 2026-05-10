@@ -2,10 +2,10 @@
 /**
  * Plugin Name: Trondealer Payments
  * Plugin URI: https://trondealer.com/woocommerce
- * Description: Accept USDT and USDC stablecoin payments in WooCommerce across 9 blockchains (TRON, Ethereum, BSC, Polygon, Arbitrum, Base, Optimism, Avalanche, Solana) via the Trondealer V2 API.
+ * Description: Accept USDT and USDC stablecoin payments in WooCommerce across 9 blockchains (TRON, Ethereum, BSC, Polygon, Arbitrum, Base, Optimism, Avalanche, Solana) via the Trondealer V2 API. Maintained by QvaPay.
  * Version: 0.1.0
- * Author: Trondealer
- * Author URI: https://trondealer.com
+ * Author: QvaPay
+ * Author URI: https://qvapay.com
  * License: GPL-2.0-or-later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: trondealer-payments

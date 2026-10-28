@@ -16,7 +16,7 @@ class TDP_Gateway extends WC_Payment_Gateway {
 		$this->id                 = self::ID;
 		$this->icon               = apply_filters( 'tdp_gateway_icon', TDP_PLUGIN_URL . 'assets/images/trondealer.svg', $this );
 		$this->method_title       = __( 'Trondealer', 'trondealer-payments' );
-		$this->method_description = __( 'Accept USDT and USDC stablecoin payments across 9 blockchains.', 'trondealer-payments' );
+		$this->method_description = __( 'Accept USDT and USDC stablecoin payments across 8 blockchains.', 'trondealer-payments' );
 		$this->has_fields         = true;
 		$this->supports           = array( 'products', 'refunds' );
 
@@ -24,7 +24,7 @@ class TDP_Gateway extends WC_Payment_Gateway {
 		$this->init_settings();
 
 		$this->title       = $this->get_option( 'title', __( 'Pay with Crypto (USDT / USDC)', 'trondealer-payments' ) );
-		$this->description = $this->get_option( 'description', __( 'Pay with stablecoins across 9 blockchains.', 'trondealer-payments' ) );
+		$this->description = $this->get_option( 'description', __( 'Pay with stablecoins across 8 blockchains.', 'trondealer-payments' ) );
 		$this->enabled     = $this->get_option( 'enabled', 'no' );
 
 		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
@@ -55,7 +55,7 @@ class TDP_Gateway extends WC_Payment_Gateway {
 			'description'      => array(
 				'title'   => __( 'Description', 'trondealer-payments' ),
 				'type'    => 'textarea',
-				'default' => __( 'Pay with stablecoins on TRON, Ethereum, BSC, Polygon, Arbitrum, Base, Optimism, Avalanche, or Solana.', 'trondealer-payments' ),
+				'default' => __( 'Pay with stablecoins on TRON, Ethereum, BSC, Polygon, Arbitrum, Base, Avalanche, or Solana.', 'trondealer-payments' ),
 			),
 			'api_key'          => array(
 				'title'       => __( 'API Key', 'trondealer-payments' ),
@@ -382,6 +382,9 @@ class TDP_Gateway extends WC_Payment_Gateway {
 			return;
 		}
 		$net = TDP_Networks::get( $assignment['network'] );
+		if ( ! $net ) {
+			return;
+		}
 		if ( $plain_text ) {
 			printf(
 				"%s\n%s: %s\n%s: %s %s\n\n",

@@ -8,15 +8,15 @@ Stable tag: 0.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Accept USDT and USDC stablecoin payments in WooCommerce across 9 blockchains. Maintained by QvaPay.
+Accept USDT and USDC stablecoin payments in WooCommerce across 8 blockchains. Maintained by QvaPay.
 
 == Description ==
 
-Trondealer Payments is a WooCommerce payment gateway that accepts USDT and USDC stablecoins across 9 blockchains: TRON, Ethereum, BSC, Polygon, Arbitrum, Base, Optimism, Avalanche, and Solana.
+Trondealer Payments is a WooCommerce payment gateway that accepts USDT and USDC stablecoins across 8 blockchains: TRON, Ethereum, BSC, Polygon, Arbitrum, Base, Avalanche, and Solana.
 
 **Key features:**
 
-* 9 blockchains supported out of the box
+* 8 blockchains supported out of the box
 * USDT and USDC, paid 1:1 against USD order totals (no rate engine, no slippage)
 * Per-order deposit address generation
 * HMAC-signed webhook delivery for instant order updates

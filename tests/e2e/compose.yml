@@ -1,0 +1,35 @@
+# Throwaway WordPress + WooCommerce for tests/e2e/run.sh. Nothing is exposed on the host:
+# the scenarios post webhooks container-to-container (http://wp/).
+services:
+  db:
+    image: mariadb:11
+    environment:
+      MARIADB_ROOT_PASSWORD: root
+      MARIADB_DATABASE: wp
+      MARIADB_USER: wp
+      MARIADB_PASSWORD: wp
+  wp:
+    image: wordpress:6-php8.3-apache
+    depends_on: [db]
+    environment: &wpdb
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wp
+      WORDPRESS_DB_PASSWORD: wp
+      WORDPRESS_DB_NAME: wp
+    volumes:
+      - wpdata:/var/www/html
+      - ../..:/var/www/html/wp-content/plugins/trondealer-payments:ro
+      - ./mu-plugins:/var/www/html/wp-content/mu-plugins:ro
+  cli:
+    image: wordpress:cli-php8.3
+    depends_on: [db, wp]
+    user: "33:33"
+    environment: *wpdb
+    volumes:
+      - wpdata:/var/www/html
+      - ../..:/var/www/html/wp-content/plugins/trondealer-payments:ro
+      - ./mu-plugins:/var/www/html/wp-content/mu-plugins:ro
+      - .:/tests:ro
+    entrypoint: ["sleep", "infinity"]
+volumes:
+  wpdata:

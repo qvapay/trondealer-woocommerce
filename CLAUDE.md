@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-A WooCommerce payment gateway plugin that accepts USDT/USDC stablecoin payments across 9 blockchains (TRON, Ethereum, BSC, Polygon, Arbitrum, Base, Optimism, Avalanche, Solana) by talking to the Trondealer V2 API at `https://trondealer.com/api/v2`. Maintained by QvaPay. Plain WordPress plugin: no PHP build step, no `package.json`, no test suite. Editing PHP/JS/CSS files is the entire dev loop — install the plugin folder into a WP/WooCommerce site to exercise it.
+A WooCommerce payment gateway plugin that accepts USDT/USDC stablecoin payments across 8 blockchains (TRON, Ethereum, BSC, Polygon, Arbitrum, Base, Avalanche, Solana) by talking to the Trondealer V2 API at `https://trondealer.com/api/v2`. Maintained by QvaPay. Plain WordPress plugin: no PHP build step, no `package.json`, no test suite. Editing PHP/JS/CSS files is the entire dev loop — install the plugin folder into a WP/WooCommerce site to exercise it.
 
 Targets: WordPress ≥ 6.2, PHP ≥ 7.4, WooCommerce ≥ 7.0. Store currency must be USD (gateway hides itself otherwise — see `TDP_Gateway::is_available`).
 

@@ -34,7 +34,7 @@ SOFTWARE.
 
 ### A note on trademarks
 
-The web3icons SVGs depict third-party brand marks (USDT, USDC, Ethereum, Polygon, Solana, Base, Arbitrum, Optimism, Avalanche, BNB Smart Chain, TRON). Those marks remain the property of their respective owners and are used here solely for nominative/descriptive purposes — to identify the chain or asset a payment can be made on. No endorsement by, or affiliation with, those projects is implied. Remove or replace any icon if you do not have permission to use the underlying mark in your jurisdiction.
+The web3icons SVGs depict third-party brand marks (USDT, USDC, Ethereum, Polygon, Solana, Base, Arbitrum, Avalanche, BNB Smart Chain, TRON). Those marks remain the property of their respective owners and are used here solely for nominative/descriptive purposes — to identify the chain or asset a payment can be made on. No endorsement by, or affiliation with, those projects is implied. Remove or replace any icon if you do not have permission to use the underlying mark in your jurisdiction.
 
 ---
 

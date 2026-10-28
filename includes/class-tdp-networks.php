@@ -60,13 +60,6 @@ class TDP_Networks {
 				'confirm_eta'   => 30,
 				'assets'        => array( 'USDT', 'USDC' ),
 			),
-			'opt'   => array(
-				'family'        => self::FAMILY_EVM,
-				'label'         => 'Optimism',
-				'network_param' => 'opt',
-				'confirm_eta'   => 30,
-				'assets'        => array( 'USDT', 'USDC' ),
-			),
 			'avax'  => array(
 				'family'        => self::FAMILY_EVM,
 				'label'         => 'Avalanche',

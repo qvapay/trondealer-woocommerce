@@ -10,6 +10,7 @@
 /README.md           export-ignore
 /build.sh            export-ignore
 /dist                export-ignore
+/tests               export-ignore
 
 # Normalize line endings for text files.
 * text=auto eol=lf

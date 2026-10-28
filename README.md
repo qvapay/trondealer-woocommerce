@@ -2,7 +2,7 @@
 
 ![Trondealer — Accept Payments in USDT on 15+ Blockchains](./assets/images/trondealer.png)
 
-Accept **USDT** and **USDC** stablecoin payments in WooCommerce across **9 blockchains** — TRON, Ethereum, BSC, Polygon, Arbitrum, Base, Optimism, Avalanche, and Solana — through the [Trondealer V2 API](https://trondealer.com).
+Accept **USDT** and **USDC** stablecoin payments in WooCommerce across **8 blockchains** — TRON, Ethereum, BSC, Polygon, Arbitrum, Base, Avalanche, and Solana — through the [Trondealer V2 API](https://trondealer.com).
 
 No rate engine, no slippage: stablecoins are charged 1:1 against the order total in USD. No node infrastructure required — Trondealer handles all on-chain interaction.
 
@@ -57,7 +57,6 @@ The gateway will hide itself from checkout if the store currency is not USD or n
 | Polygon       | EVM    | USDT, USDC   | ~30s                 |
 | Arbitrum      | EVM    | USDT, USDC   | ~10s                 |
 | Base          | EVM    | USDT, USDC   | ~30s                 |
-| Optimism      | EVM    | USDT, USDC   | ~30s                 |
 | Avalanche     | EVM    | USDT, USDC   | ~10s                 |
 | Solana        | SOL    | USDT, USDC   | ~30s                 |
 
